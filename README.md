@@ -7,7 +7,7 @@ This is a prototype and remains under development at the moment. Feel free to us
 
 Sneak Peak:
 <p align="center">
-  <img src="[your_relative_path_here](https://github.com/akbarriki/task-network/blob/main/images/demo2.gif)" width="350">
-  <img src="[your_relative_path_here](https://github.com/akbarriki/task-network/blob/main/images/demo3.gif)" width="350">
+  <img src="images/demo2.gif" width="350">
+  <img src="images/demo3.gif" width="350">
 </p>
 

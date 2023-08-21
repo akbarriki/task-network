@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 500px;
+                 background-color: #FFFFFF;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "red", "font": {"color": "black"}, "id": "EDWBI", "label": "EDWBI", "shape": "square", "title": "EDWBI", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "EOI", "label": "EOI", "shape": "square", "title": "EOI", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "Email Retrieval (Kofax)", "label": "Email Retrieval (Kofax)", "shape": "square", "title": "Email Retrieval (Kofax)", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "IKU", "label": "IKU", "shape": "square", "title": "IKU", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "ITSM", "label": "ITSM", "shape": "square", "title": "ITSM", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "Interkoneksi", "label": "Interkoneksi", "shape": "square", "title": "Interkoneksi", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "Investasi TIK 2024", "label": "Investasi TIK 2024", "shape": "square", "title": "Investasi TIK 2024", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "Keamanan dan BYOD", "label": "Keamanan dan BYOD", "shape": "square", "title": "Keamanan dan BYOD", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "Kompetensi Pegawai", "label": "Kompetensi Pegawai", "shape": "square", "title": "Kompetensi Pegawai", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "Manajemen Mutu Layanan", "label": "Manajemen Mutu Layanan", "shape": "square", "title": "Manajemen Mutu Layanan", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "Newsletter", "label": "Newsletter", "shape": "square", "title": "Newsletter", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "PJAP", "label": "PJAP", "shape": "square", "title": "PJAP", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "PJES", "label": "PJES", "shape": "square", "title": "PJES", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "PPMSE", "label": "PPMSE", "shape": "square", "title": "PPMSE", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "Pemadanan NPWP", "label": "Pemadanan NPWP", "shape": "square", "title": "Pemadanan NPWP", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "SOP", "label": "SOP", "shape": "square", "title": "SOP", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "SPBE", "label": "SPBE", "shape": "square", "title": "SPBE", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "Service Catalogue", "label": "Service Catalogue", "shape": "square", "title": "Service Catalogue", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "Tata Kelola Data", "label": "Tata Kelola Data", "shape": "square", "title": "Tata Kelola Data", "value": 50}, {"color": "red", "font": {"color": "black"}, "id": "Tata Kelola TIK", "label": "Tata Kelola TIK", "shape": "square", "title": "Tata Kelola TIK", "value": 50}, {"color": "green", "font": {"color": "black"}, "id": "Riki", "label": "Riki", "shape": "dot", "title": "Riki", "value": 50}, {"color": "green", "font": {"color": "black"}, "id": "Pratama", "label": "Pratama", "shape": "dot", "title": "Pratama", "value": 50}, {"color": "green", "font": {"color": "black"}, "id": "Isnaini", "label": "Isnaini", "shape": "dot", "title": "Isnaini", "value": 50}, {"color": "green", "font": {"color": "black"}, "id": "Fannany", "label": "Fannany", "shape": "dot", "title": "Fannany", "value": 50}, {"color": "green", "font": {"color": "black"}, "id": "Rizqa", "label": "Rizqa", "shape": "dot", "title": "Rizqa", "value": 50}, {"color": "green", "font": {"color": "black"}, "id": "Agul", "label": "Agul", "shape": "dot", "title": "Agul", "value": 50}, {"color": "green", "font": {"color": "black"}, "id": "Haifa", "label": "Haifa", "shape": "dot", "title": "Haifa", "value": 50}, {"color": "green", "font": {"color": "black"}, "id": "Zalik", "label": "Zalik", "shape": "dot", "title": "Zalik", "value": 50}, {"color": "green", "font": {"color": "black"}, "id": "Aryanda", "label": "Aryanda", "shape": "dot", "title": "Aryanda", "value": 50}, {"color": "green", "font": {"color": "black"}, "id": "Sigit", "label": "Sigit", "shape": "dot", "title": "Sigit", "value": 50}, {"color": "green", "font": {"color": "black"}, "id": "Rijal", "label": "Rijal", "shape": "dot", "title": "Rijal", "value": 50}]);
+                  edges = new vis.DataSet([{"from": "EDWBI", "to": "Riki"}, {"from": "EDWBI", "to": "Pratama"}, {"from": "Interkoneksi", "to": "Isnaini"}, {"from": "Interkoneksi", "to": "Fannany"}, {"from": "Manajemen Mutu Layanan", "to": "Isnaini"}, {"from": "Manajemen Mutu Layanan", "to": "Rizqa"}, {"from": "Manajemen Mutu Layanan", "to": "Agul"}, {"from": "PJAP", "to": "Isnaini"}, {"from": "PJAP", "to": "Haifa"}, {"from": "SPBE", "to": "Zalik"}, {"from": "Email Retrieval (Kofax)", "to": "Aryanda"}, {"from": "Email Retrieval (Kofax)", "to": "Pratama"}, {"from": "IKU", "to": "Isnaini"}, {"from": "IKU", "to": "Haifa"}, {"from": "ITSM", "to": "Sigit"}, {"from": "Keamanan dan BYOD", "to": "Fannany"}, {"from": "Kompetensi Pegawai", "to": "Pratama"}, {"from": "Newsletter", "to": "Riki"}, {"from": "Newsletter", "to": "Rijal"}, {"from": "Newsletter", "to": "Aryanda"}, {"from": "Newsletter", "to": "Sigit"}, {"from": "PJES", "to": "Isnaini"}, {"from": "PPMSE", "to": "Isnaini"}, {"from": "PPMSE", "to": "Haifa"}, {"from": "Pemadanan NPWP", "to": "Isnaini"}, {"from": "Pemadanan NPWP", "to": "Haifa"}, {"from": "SOP", "to": "Isnaini"}, {"from": "Service Catalogue", "to": "Isnaini"}, {"from": "Service Catalogue", "to": "Agul"}, {"from": "Tata Kelola Data", "to": "Riki"}, {"from": "Tata Kelola Data", "to": "Isnaini"}, {"from": "Tata Kelola Data", "to": "Rizqa"}, {"from": "Tata Kelola TIK", "to": "Riki"}, {"from": "Tata Kelola TIK", "to": "Rijal"}, {"from": "Tata Kelola TIK", "to": "Sigit"}, {"from": "Tata Kelola TIK", "to": "Aryanda"}, {"from": "Tata Kelola TIK", "to": "Isnaini"}, {"from": "Tata Kelola TIK", "to": "Haifa"}, {"from": "Tata Kelola TIK", "to": "Rizqa"}, {"from": "Tata Kelola TIK", "to": "Zalik"}, {"from": "Tata Kelola TIK", "to": "Pratama"}, {"from": "Tata Kelola TIK", "to": "Fannany"}, {"from": "Investasi TIK 2024", "to": "Riki"}, {"from": "Investasi TIK 2024", "to": "Aryanda"}, {"from": "EOI", "to": "Rijal"}, {"from": "EOI", "to": "Pratama"}, {"from": "EOI", "to": "Sigit"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "repulsion": {
+            "centralGravity": 0.18,
+            "damping": 0.95,
+            "nodeDistance": 100,
+            "springConstant": 0.1,
+            "springLength": 80
+        },
+        "solver": "repulsion",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

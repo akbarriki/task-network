@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 465px;
+                 background-color: #222222;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#97c2fc", "font": {"color": "white"}, "id": "Simvastatin", "label": "Simvastatin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Siltuximab", "label": "Siltuximab", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Eltrombopag", "label": "Eltrombopag", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Fenofibrate", "label": "Fenofibrate", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Etravirine", "label": "Etravirine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Netupitant", "label": "Netupitant", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Amodiaquine", "label": "Amodiaquine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Palbociclib", "label": "Palbociclib", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Bexarotene", "label": "Bexarotene", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Diltiazem", "label": "Diltiazem", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Simeprevir", "label": "Simeprevir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Darunavir", "label": "Darunavir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Amiodarone", "label": "Amiodarone", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Bosentan", "label": "Bosentan", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Mifepristone", "label": "Mifepristone", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Boceprevir", "label": "Boceprevir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Aluminum hydroxide", "label": "Aluminum hydroxide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Nelfinavir", "label": "Nelfinavir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Batimastat", "label": "Batimastat", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Stiripentol", "label": "Stiripentol", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Gemfibrozil", "label": "Gemfibrozil", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Aprepitant", "label": "Aprepitant", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Dabrafenib", "label": "Dabrafenib", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Rifabutin", "label": "Rifabutin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Daptomycin", "label": "Daptomycin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Ritonavir", "label": "Ritonavir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Deferasirox", "label": "Deferasirox", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Nefazodone", "label": "Nefazodone", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Mitotane", "label": "Mitotane", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Raltegravir", "label": "Raltegravir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Tocilizumab", "label": "Tocilizumab", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Quinine", "label": "Quinine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Ivacaftor", "label": "Ivacaftor", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Fosaprepitant", "label": "Fosaprepitant", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Efavirenz", "label": "Efavirenz", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Nicotinamide", "label": "Nicotinamide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Saquinavir", "label": "Saquinavir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Eslicarbazepine acetate", "label": "Eslicarbazepine acetate", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Lomitapide", "label": "Lomitapide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Voriconazole", "label": "Voriconazole", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Dronedarone", "label": "Dronedarone", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Ticagrelor", "label": "Ticagrelor", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Trabectedin", "label": "Trabectedin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Fusidic acid", "label": "Fusidic acid", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Ceritinib", "label": "Ceritinib", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Ciprofibrate", "label": "Ciprofibrate", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Aripiprazole", "label": "Aripiprazole", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Fosphenytoin", "label": "Fosphenytoin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Fluconazole", "label": "Fluconazole", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Cobicistat", "label": "Cobicistat", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "St. John\u0027s Wort", "label": "St. John\u0027s Wort", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Dasatinib", "label": "Dasatinib", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Teriflunomide", "label": "Teriflunomide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Bezafibrate", "label": "Bezafibrate", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Acipimox", "label": "Acipimox", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Isoflurophate", "label": "Isoflurophate", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Daclatasvir", "label": "Daclatasvir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Erythromycin", "label": "Erythromycin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Cyproterone acetate", "label": "Cyproterone acetate", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Amlodipine", "label": "Amlodipine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Calcium carbonate", "label": "Calcium carbonate", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Idelalisib", "label": "Idelalisib", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Telithromycin", "label": "Telithromycin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Fosamprenavir", "label": "Fosamprenavir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Verapamil", "label": "Verapamil", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Posaconazole", "label": "Posaconazole", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Colchicine", "label": "Colchicine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Danazol", "label": "Danazol", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Pazopanib", "label": "Pazopanib", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Cyclosporine", "label": "Cyclosporine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Phenytoin", "label": "Phenytoin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Ranolazine", "label": "Ranolazine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Imatinib", "label": "Imatinib", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Magnesium oxide", "label": "Magnesium oxide", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Indinavir", "label": "Indinavir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Niacin", "label": "Niacin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Azithromycin", "label": "Azithromycin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Conivaptan", "label": "Conivaptan", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Itraconazole", "label": "Itraconazole", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Telaprevir", "label": "Telaprevir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Ketoconazole", "label": "Ketoconazole", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Dicoumarol", "label": "Dicoumarol", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Tipranavir", "label": "Tipranavir", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Lercanidipine", "label": "Lercanidipine", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Luliconazole", "label": "Luliconazole", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Clarithromycin", "label": "Clarithromycin", "shape": "dot", "size": 10}, {"color": "#97c2fc", "font": {"color": "white"}, "id": "Atazanavir", "label": "Atazanavir", "shape": "dot", "size": 10}]);
+                  edges = new vis.DataSet([{"from": "Simvastatin", "to": "Siltuximab", "width": 1}, {"from": "Simvastatin", "to": "Eltrombopag", "width": 1}, {"from": "Simvastatin", "to": "Fenofibrate", "width": 1}, {"from": "Simvastatin", "to": "Etravirine", "width": 1}, {"from": "Simvastatin", "to": "Netupitant", "width": 1}, {"from": "Simvastatin", "to": "Amodiaquine", "width": 1}, {"from": "Simvastatin", "to": "Palbociclib", "width": 1}, {"from": "Simvastatin", "to": "Bexarotene", "width": 1}, {"from": "Simvastatin", "to": "Diltiazem", "width": 1}, {"from": "Simvastatin", "to": "Simeprevir", "width": 1}, {"from": "Simvastatin", "to": "Darunavir", "width": 1}, {"from": "Simvastatin", "to": "Amiodarone", "width": 1}, {"from": "Simvastatin", "to": "Bosentan", "width": 1}, {"from": "Simvastatin", "to": "Mifepristone", "width": 1}, {"from": "Simvastatin", "to": "Boceprevir", "width": 1}, {"from": "Simvastatin", "to": "Aluminum hydroxide", "width": 1}, {"from": "Simvastatin", "to": "Nelfinavir", "width": 1}, {"from": "Simvastatin", "to": "Batimastat", "width": 1}, {"from": "Simvastatin", "to": "Stiripentol", "width": 1}, {"from": "Simvastatin", "to": "Gemfibrozil", "width": 1}, {"from": "Simvastatin", "to": "Aprepitant", "width": 1}, {"from": "Simvastatin", "to": "Dabrafenib", "width": 1}, {"from": "Simvastatin", "to": "Rifabutin", "width": 1}, {"from": "Simvastatin", "to": "Daptomycin", "width": 1}, {"from": "Simvastatin", "to": "Ritonavir", "width": 1}, {"from": "Simvastatin", "to": "Deferasirox", "width": 1}, {"from": "Simvastatin", "to": "Nefazodone", "width": 1}, {"from": "Simvastatin", "to": "Mitotane", "width": 1}, {"from": "Simvastatin", "to": "Raltegravir", "width": 1}, {"from": "Simvastatin", "to": "Tocilizumab", "width": 1}, {"from": "Simvastatin", "to": "Quinine", "width": 1}, {"from": "Simvastatin", "to": "Ivacaftor", "width": 1}, {"from": "Simvastatin", "to": "Fosaprepitant", "width": 1}, {"from": "Simvastatin", "to": "Efavirenz", "width": 1}, {"from": "Simvastatin", "to": "Nicotinamide", "width": 1}, {"from": "Simvastatin", "to": "Saquinavir", "width": 1}, {"from": "Simvastatin", "to": "Eslicarbazepine acetate", "width": 1}, {"from": "Simvastatin", "to": "Lomitapide", "width": 1}, {"from": "Simvastatin", "to": "Voriconazole", "width": 1}, {"from": "Simvastatin", "to": "Dronedarone", "width": 1}, {"from": "Simvastatin", "to": "Ticagrelor", "width": 1}, {"from": "Simvastatin", "to": "Trabectedin", "width": 1}, {"from": "Simvastatin", "to": "Fusidic acid", "width": 1}, {"from": "Simvastatin", "to": "Ceritinib", "width": 1}, {"from": "Simvastatin", "to": "Ciprofibrate", "width": 1}, {"from": "Simvastatin", "to": "Aripiprazole", "width": 1}, {"from": "Simvastatin", "to": "Fosphenytoin", "width": 1}, {"from": "Simvastatin", "to": "Fluconazole", "width": 1}, {"from": "Simvastatin", "to": "Cobicistat", "width": 1}, {"from": "Simvastatin", "to": "St. John\u0027s Wort", "width": 1}, {"from": "Simvastatin", "to": "Dasatinib", "width": 1}, {"from": "Simvastatin", "to": "Teriflunomide", "width": 1}, {"from": "Simvastatin", "to": "Bezafibrate", "width": 1}, {"from": "Simvastatin", "to": "Acipimox", "width": 1}, {"from": "Simvastatin", "to": "Isoflurophate", "width": 1}, {"from": "Simvastatin", "to": "Daclatasvir", "width": 1}, {"from": "Simvastatin", "to": "Erythromycin", "width": 1}, {"from": "Simvastatin", "to": "Cyproterone acetate", "width": 1}, {"from": "Simvastatin", "to": "Amlodipine", "width": 1}, {"from": "Simvastatin", "to": "Calcium carbonate", "width": 1}, {"from": "Simvastatin", "to": "Idelalisib", "width": 1}, {"from": "Simvastatin", "to": "Telithromycin", "width": 1}, {"from": "Simvastatin", "to": "Fosamprenavir", "width": 1}, {"from": "Simvastatin", "to": "Verapamil", "width": 1}, {"from": "Simvastatin", "to": "Posaconazole", "width": 1}, {"from": "Simvastatin", "to": "Colchicine", "width": 1}, {"from": "Simvastatin", "to": "Danazol", "width": 1}, {"from": "Simvastatin", "to": "Pazopanib", "width": 1}, {"from": "Simvastatin", "to": "Cyclosporine", "width": 1}, {"from": "Simvastatin", "to": "Phenytoin", "width": 1}, {"from": "Simvastatin", "to": "Ranolazine", "width": 1}, {"from": "Simvastatin", "to": "Imatinib", "width": 1}, {"from": "Simvastatin", "to": "Magnesium oxide", "width": 1}, {"from": "Simvastatin", "to": "Indinavir", "width": 1}, {"from": "Simvastatin", "to": "Niacin", "width": 1}, {"from": "Simvastatin", "to": "Azithromycin", "width": 1}, {"from": "Simvastatin", "to": "Conivaptan", "width": 1}, {"from": "Simvastatin", "to": "Itraconazole", "width": 1}, {"from": "Simvastatin", "to": "Telaprevir", "width": 1}, {"from": "Simvastatin", "to": "Ketoconazole", "width": 1}, {"from": "Simvastatin", "to": "Dicoumarol", "width": 1}, {"from": "Simvastatin", "to": "Tipranavir", "width": 1}, {"from": "Simvastatin", "to": "Lercanidipine", "width": 1}, {"from": "Simvastatin", "to": "Luliconazole", "width": 1}, {"from": "Simvastatin", "to": "Clarithromycin", "width": 1}, {"from": "Simvastatin", "to": "Atazanavir", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "repulsion": {
+            "centralGravity": 0.33,
+            "damping": 0.95,
+            "nodeDistance": 420,
+            "springConstant": 0.1,
+            "springLength": 110
+        },
+        "solver": "repulsion",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

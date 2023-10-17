@@ -14,3 +14,5 @@ Identify PIC by Task Name(s):
 <p align="center">
   <img src="images/demo3.gif">
 </p>
+
+You can also view the live app on Streamlit <b><a href="https://task-network.streamlit.app/">here</a></b>
